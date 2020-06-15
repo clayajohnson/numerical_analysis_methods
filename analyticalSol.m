@@ -1,10 +1,7 @@
 function [U] = analyticalSol(n)
 %% Analytical solution to a 2D heat problem
-% input:
-% n             - grid resolution factor
-%
-% output:
-% U             - analytical solution for 100 fourier terms
+% n             - spatial step factor
+% U             - analytical solution for 100 non-zero fourier terms
 
 % solution parameters
 ds = 0.1/2^n;   % spatial grid size
@@ -18,7 +15,6 @@ x = 0:ds:L;
 y = 0:ds:H;
 nx = length(x);
 ny = length(y);
-[X,Y] = meshgrid(x,y);
 
 for pos = 1:nx
     f1(pos) = (-4*T1/L^2)*x(pos)*(x(pos)-L);
