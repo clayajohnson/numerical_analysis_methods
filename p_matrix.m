@@ -26,17 +26,17 @@ U(:,1) = 0;     % left boundary = 0
 U(:,end) = 0;   % right boundary = 0
 
 % initialise coefficients matrix M
-NX = nx-2; % solution points in x minus boundary conditions
-NY = ny-2; % solution points in y minus boundary conditions
-size = NX*NY; % unknown points
-M = sparse(size,size); % sparse matrix for larger n values
-M(1:size+1:size^2) = -4; % (i,j) diagonal
-M(size+1:size+1:size^2) = 1; % (i-1,j) diagonal
-M(2:size+1:size^2-size) = 1; % (i+1,j) diagonal
-M(NX+1:size+1:size^2-NX*size) = 1; % (i,j+1) diagonal
-M(NX*size+1:size+1:size^2) = 1; % (i,j-1) diagonal
+NX = nx-2;              % solution points in x minus boundary conditions
+NY = ny-2;              % solution points in y minus boundary conditions
+size = NX*NY;           % unknown points
+M = sparse(size,size);  % sparse matrix for larger n values
+M(1:size+1:size^2) = -4;            % (i,j) diagonal
+M(size+1:size+1:size^2) = 1;        % (i-1,j) diagonal
+M(2:size+1:size^2-size) = 1;        % (i+1,j) diagonal
+M(NX+1:size+1:size^2-NX*size) = 1;  % (i,j+1) diagonal
+M(NX*size+1:size+1:size^2) = 1;     % (i,j-1) diagonal
 M(size*(NX-1)+(NX+1):NX*size+NX:size^2) = 0; % i+1 at x = L boundary condition
-M(size*NX+NX:NX*size+NX:size^2) = 0; % i-1 at x = 0 boundary condition
+M(size*NX+NX:NX*size+NX:size^2) = 0;         % i-1 at x = 0 boundary condition
 
 % initialise solution vector Un
 Unp1 = sparse(size,1); % solution vector
