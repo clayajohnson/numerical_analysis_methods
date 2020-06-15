@@ -1,18 +1,10 @@
-function [X,Y,U,t,Err] = lpl_cd(n)
+function [U,t,Err] = lpl_cd(n)
 %% Numerical approximation of Laplace equation
-% input:
 % n             - spatial step factor
-%
-% output:
-% X,Y,U         - meshgrid and solution values for plotting
-% t             - time for error to converge
-% L1,L2,LInf    - error norms for p = 1,2 and 10000
+% U             - solution values
+% t, Err        - time and error for simulation
+A = analyticalSol(n); % analyticalSol function for error calculations
 
-%% Analytical solution
-% analyticalSol function is used to calculate the analytical solution for error norm calculations
-A = analyticalSol(n);
-
-%% Iterative Laplace central difference solution
 % initialise stencil variables
 L = 3;          % domain length
 H = 1;          % domain height
@@ -27,7 +19,6 @@ f1 = x;
 f2 = x;
 nx = length(x);
 ny = length(y);
-[X,Y] = meshgrid(x,y);
 
 % calculate boundary conditions
 for pos = 1:nx
@@ -37,22 +28,17 @@ end
 
 % initialise solution matrix
 Unp1 = zeros(ny,nx);
-
-% apply boundary conditions
 Unp1(end,:) = f1;   % top boundary y = H
 Unp1(1,:) = f2;     % bottom boundary y = 0
 Unp1(:,1) = 0;      % left boundary = 0
 Unp1(:,end) = 0;    % right boundary = 0
 
-% initialise error and tolerance
+% loop until error converges
 err = 1;        % initial error value
 tol = 1e-8;     % tolerance for error convergence
-
-% loop until error converges
-tic; % begin timing algorithm
+tic;            % begin timing
 while  err > tol
-    % update solution grid
-    Un = Unp1;
+    Un = Unp1; % update solution grid
     
     % loop over solution grid except for boundaries
     for j = 2:ny-1
@@ -64,11 +50,8 @@ while  err > tol
     err = max(abs(Unp1(:)-Un(:)));
 end
 t = toc; % stop timing
+U = Unp1; % Set output variable
 
-% Set output variable
-U = Unp1;
-
-%% error calculation
-% the error is taken to be the largest difference between two corresponding points in U and A
+%% error calculation - largest difference between two corresponding points in U and A
 Err = max(abs(U(:)-A(:)));
 end
