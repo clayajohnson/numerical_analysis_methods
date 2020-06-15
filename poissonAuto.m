@@ -1,3 +1,4 @@
+%% this script automates the calculation and plottion of a numerical solution to poisson's equation
 uT = zeros(1,3);
 for n = 1:3
     p = 1/(2*n^2);
